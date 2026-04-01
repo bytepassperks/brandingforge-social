@@ -40,12 +40,32 @@ import { OAuthRepository } from '@gitroom/nestjs-libraries/database/prisma/oauth
 import { OAuthService } from '@gitroom/nestjs-libraries/database/prisma/oauth/oauth.service';
 import { AnnouncementsRepository } from '@gitroom/nestjs-libraries/database/prisma/announcements/announcements.repository';
 import { AnnouncementsService } from '@gitroom/nestjs-libraries/database/prisma/announcements/announcements.service';
+import { TemporalService } from 'nestjs-temporal-core';
+
+// Stub TemporalService provider for when DISABLE_TEMPORAL=true
+// Services like NotificationService, PostsService, AutopostService, IntegrationService,
+// RefreshIntegrationService, and EmailService inject TemporalService but can gracefully
+// handle it being a no-op stub (calls are wrapped in try/catch or are non-critical)
+const temporalStubProvider = process.env.DISABLE_TEMPORAL === 'true'
+  ? [{
+      provide: TemporalService,
+      useValue: {
+        client: {
+          getRawClient: () => null,
+          getWorkflowHandle: async () => ({ terminate: async () => {} }),
+          workflow: { list: () => ({ toArray: async () => [] }) },
+        },
+        terminateWorkflow: async () => {},
+      },
+    }]
+  : [];
 
 @Global()
 @Module({
   imports: [],
   controllers: [],
   providers: [
+    ...temporalStubProvider,
     PrismaService,
     PrismaRepository,
     PrismaTransaction,
