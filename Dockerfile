@@ -29,4 +29,7 @@ RUN mkdir -p /uploads && chown -R www:www /uploads
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "nginx && pnpm run pm2"]
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]
