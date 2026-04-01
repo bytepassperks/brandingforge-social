@@ -46,10 +46,11 @@ services:
       mountPath: /uploads
       sizeGB: 1
 
+  - type: redis
+    name: brandingforge-social-redis
+    plan: starter
+    ipAllowList: []
+
 databases:
   - name: brandingforge-social-db
-    plan: starter
-
-redis:
-  - name: brandingforge-social-redis
     plan: starter
