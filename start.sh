@@ -10,8 +10,8 @@ echo "==> Running Prisma database push..."
 pnpm dlx prisma@6.5.0 db push --accept-data-loss --schema ./libraries/nestjs-libraries/src/database/prisma/schema.prisma
 
 echo "==> Starting backend API (API-only mode for 512MB plan)..."
-# Give backend 384MB heap - enough for NestJS + Prisma with headroom
-# The remaining ~128MB is for OS, Node runtime overhead
-export NODE_OPTIONS="--max-old-space-size=384"
-cd /app/apps/backend
-exec pnpm run start
+# Run node directly with 384MB heap limit to ensure NODE_OPTIONS is respected
+# pnpm run start -> dotenv -> node chain may not pass NODE_OPTIONS through
+# Render injects env vars directly, so dotenv is not needed
+cd /app
+exec node --max-old-space-size=384 --experimental-require-module ./dist/apps/backend/src/main.js
