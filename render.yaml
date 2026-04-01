@@ -53,4 +53,5 @@ services:
 
 databases:
   - name: brandingforge-social-db
-    plan: starter
+    plan: basic-256mb
+    ipAllowList: []
