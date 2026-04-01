@@ -43,6 +43,8 @@ services:
         value: "false"
       - key: DISABLE_TEMPORAL
         value: "true"
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=1536"
     disk:
       name: uploads
       mountPath: /uploads
