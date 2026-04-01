@@ -15,5 +15,16 @@ export DISABLE_TEMPORAL=true
 # Ensure Node.js has enough heap memory (1.5GB of 2GB total)
 export NODE_OPTIONS="--max-old-space-size=1536"
 
+# Fix port routing: Render sets PORT (e.g. 10000) which nginx must listen on.
+# Backend must use port 3000 and frontend port 4200 (what nginx.conf expects).
+RENDER_PORT="${PORT:-5000}"
+echo "==> Render PORT=$RENDER_PORT, setting nginx to listen on it..."
+
+# Update nginx config to listen on the Render PORT instead of hardcoded 5000
+sed -i "s/listen 5000;/listen ${RENDER_PORT};/" /etc/nginx/nginx.conf
+
+# Override PORT=3000 so the NestJS backend listens on 3000 (where nginx proxies /api/ to)
+export PORT=3000
+
 # Start nginx and PM2 (backend + frontend)
 nginx && pnpm run pm2
