@@ -10,8 +10,8 @@ echo "==> Running Prisma database push..."
 pnpm dlx prisma@6.5.0 db push --accept-data-loss --schema ./libraries/nestjs-libraries/src/database/prisma/schema.prisma
 
 echo "==> Starting backend API (API-only mode for 512MB plan)..."
-# Run node directly with 384MB heap limit to ensure NODE_OPTIONS is respected
-# pnpm run start -> dotenv -> node chain may not pass NODE_OPTIONS through
-# Render injects env vars directly, so dotenv is not needed
+# Disable Temporal (no Temporal server on Starter plan)
+export DISABLE_TEMPORAL=true
+# Run node directly with 384MB heap limit
 cd /app
 exec node --max-old-space-size=384 --experimental-require-module ./dist/apps/backend/src/main.js

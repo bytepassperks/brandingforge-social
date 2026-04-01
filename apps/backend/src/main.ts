@@ -4,8 +4,10 @@ import compression from 'compression';
 
 import { loadSwagger } from '@gitroom/helpers/swagger/load.swagger';
 import { json } from 'express';
-import { Runtime } from '@temporalio/worker';
-Runtime.install({ shutdownSignals: [] });
+if (process.env.DISABLE_TEMPORAL !== 'true') {
+  const { Runtime } = require('@temporalio/worker');
+  Runtime.install({ shutdownSignals: [] });
+}
 
 process.env.TZ = 'UTC';
 
