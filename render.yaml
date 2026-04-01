@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: brandingforge-social
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: brandingforge-social-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: brandingforge-social-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: IS_GENERAL
+        value: "true"
+      - key: NOT_SECURED
+        value: "true"
+      - key: FRONTEND_URL
+        value: "https://brandingforge-social.onrender.com"
+      - key: NEXT_PUBLIC_BACKEND_URL
+        value: "https://brandingforge-social.onrender.com/api"
+      - key: BACKEND_INTERNAL_URL
+        value: "http://localhost:3000"
+      - key: STORAGE_PROVIDER
+        value: "cloudflare"
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_SECRET_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_BUCKETNAME
+        value: "mega-transfers"
+      - key: CLOUDFLARE_BUCKET_URL
+        sync: false
+      - key: CLOUDFLARE_REGION
+        value: "us-west-2"
+      - key: NX_ADD_PLUGINS
+        value: "false"
+    disk:
+      name: uploads
+      mountPath: /uploads
+      sizeGB: 1
+
+databases:
+  - name: brandingforge-social-db
+    plan: starter
+
+redis:
+  - name: brandingforge-social-redis
+    plan: starter

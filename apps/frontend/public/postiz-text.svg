@@ -1,0 +1,10 @@
+<svg width="400" height="50" viewBox="0 0 400 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bf-text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <text x="0" y="35" font-family="Plus Jakarta Sans, Inter, system-ui, sans-serif" font-size="32" font-weight="700" fill="currentColor">BrandingForge</text>
+  <text x="282" y="35" font-family="Plus Jakarta Sans, Inter, system-ui, sans-serif" font-size="32" font-weight="400" fill="url(#bf-text-grad)">Social</text>
+</svg>
